@@ -1,0 +1,8 @@
+.not-found {
+  flex-direction: column;
+}
+
+.not-found h1 {
+  font-size: 200px;
+  margin-bottom: 0;
+}

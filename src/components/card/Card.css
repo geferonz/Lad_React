@@ -1,0 +1,10 @@
+.card .title {
+  margin-top: 1em;
+  height: 5em;
+}
+
+.card img {
+  width: auto;
+  height: 260px;
+  max-width: 100%;
+}

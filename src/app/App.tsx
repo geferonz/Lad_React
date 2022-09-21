@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Navigate, Routes, Route } from 'react-router-dom';
 import Header from 'components/header/Header';
 import Home from 'pages/home/Home';
 import Comics from 'pages/comics/Comics';
@@ -32,8 +32,8 @@ const App = () => {
           element={<NotFound />}
         />
         <Route
-          path="*"
-          element={<NotFound />}
+          path = "*"
+          element={<Navigate to="/not-found" replace />}
         />
       </Routes>
     </div>

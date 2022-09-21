@@ -43,10 +43,10 @@ const Books = ({title, src}: Props) => {
   const page = Number(location.pathname.split("/")[2]);
 
   const maxResults = 12;
-  const path = `https://www.googleapis.com/books/v1/volumes?q=subject:${src}&startIndex=${(page - 1) * maxResults}&maxResults=${maxResults}`;
+  const query = `https://www.googleapis.com/books/v1/volumes?q=subject:${src}&startIndex=${(page - 1) * maxResults}&maxResults=${maxResults}`;
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  React.useEffect(() => receivedData(), [path]);
+  React.useEffect(() => receivedData(), [query]);
 
   const handlePageClick = (e: {
       selected: number;
@@ -56,14 +56,16 @@ const Books = ({title, src}: Props) => {
   };
 
   const receivedData = () => {
-    if (isNaN(page) || page > category.totalPage) {
+    if (isNaN(page)) {
       navigate("/not-found")
     } else {
       dispatch(updateIsLoading(true));
-      axios.get(path).then(resp => {
+      axios.get(query).then(resp => {
+        const totalPage = Math.ceil(resp.data.totalItems / maxResults);
+        if (page - 1 > totalPage) navigate("/not-found");
         dispatch(updateIsLoading(false));
         dispatch(updateCategory({
-          totalPage: Math.ceil(resp.data.totalItems / maxResults),
+          totalPage,
           items: resp.data.items.map((item: Book) => {
             return {title: item.volumeInfo.title, imageLinks: item.volumeInfo.imageLinks?.smallThumbnail}
           })
@@ -71,6 +73,8 @@ const Books = ({title, src}: Props) => {
       });
     }
   }
+
+  const forcePage = category.totalPage < page - 1 ? undefined : (page - 1);
 
   return (
     <div className="books">
@@ -94,7 +98,7 @@ const Books = ({title, src}: Props) => {
         marginPagesDisplayed={1}
         pageRangeDisplayed={3}
         onPageChange={handlePageClick}
-        forcePage={page - 1}
+        forcePage={forcePage}
         containerClassName={"pagination"}
         activeClassName={"active"}/>
     </div>

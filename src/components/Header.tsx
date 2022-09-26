@@ -1,15 +1,63 @@
 import { Link, useLocation } from "react-router-dom";
-import logo from 'assets/logo.png';
-import Container from 'components/container/Container';
-import './Header.css';
+import styled from 'styled-components';
+
+import { logo } from 'assets';
+import { Container } from 'components';
+
+const BaseHeader = styled.header`
+  height: 100px;
+  background-color: black;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+
+  a {
+    padding: 8px;
+    cursor: pointer;
+
+    img {
+      width: 100px;
+    }
+  }
+
+  nav ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+
+    li {
+      font-weight: bold;
+      font-size: 18px;
+      margin-right: 18px;
+  
+      a {
+        color: #fff;
+        text-decoration: none;
+  
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+  
+      .active {
+        background: #fff;
+        color: #000;
+      }
+    }
+  }
+`
+
+const BaseContainer = styled(Container)`
+  justify-content: space-between;
+`
 
 const Header = () => {
   const location = useLocation();
   const splitLocation = location.pathname.split("/");
 
   return (
-    <header className="header">
-      <Container>
+    <BaseHeader>
+      <BaseContainer>
         <Link to="/"><img src={logo} className="logo" alt="logo" title="Home" /></Link>
         <nav>
           <ul>
@@ -19,8 +67,8 @@ const Header = () => {
             <li><Link to="/games-and-activities/1" className={splitLocation[1] === "games-and-activities" ? "active" : ""}>Games & Activities</Link></li>
           </ul>
         </nav>
-      </Container>
-    </header>
+      </BaseContainer>
+    </BaseHeader>
   );
 }
 

@@ -22,11 +22,11 @@
         "outDir": "build",
         "baseUrl": "src",
         "paths": {
-            "app": ["app/*"],
-            "assets": ["assets/*"],
-            "components": ["components/*"],
-            "pages": ["pages/*"],
-            "store": ["store/*"]
+            "assets": ["assets/index.ts"],
+            "components": ["components/index.ts"],
+            "pages": ["pages/index.ts"],
+            "store": ["store/index.ts"],
+            "types": ["types/main.ts"]
         }
     },
     "include": [

@@ -3,11 +3,11 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import { useDispatch, useSelector } from "react-redux";
-import { selectCategory, updateCategory, updateIsLoading } from 'store/categorySlice';
-import Card from 'components/card/Card';
-import Container from 'components/container/Container';
+import styled from 'styled-components';
 
-import './Books.css';
+import { selectCategory, updateCategory, updateIsLoading } from 'store';
+import { Card, Container } from 'components';
+import { Items } from 'types';
 
 interface Props {
   title: string,
@@ -23,16 +23,49 @@ export interface Book {
   }
 }
 
-export interface Items {
-  title: string,
-  imageLinks: string
-}
-
 interface Category {
   totalPage: number,
   isLoading: boolean,
-  items: Array<Items>
+  items: Items[]
 }
+
+const BaseBooks = styled.div`
+  overflow-y: scroll;
+  height: calc(100vh - 160px);
+
+  ul li {
+    margin: 0 8px;
+    font-weight: inherit;
+  }
+
+  .pagination {
+    display: flex;
+    margin: 0;
+    padding: 18px;
+    list-style: none;
+    user-select: none;
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    justify-content: center;
+  }
+
+  .pagination a {
+    cursor: pointer;
+  }
+
+  .pagination .active a {
+    font-weight: 800;
+  }
+`
+
+const BooksContainer = styled(Container)`
+  margin: 18px auto;
+  padding: 0 4px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 4px;
+`
 
 const Books = ({title, src}: Props) => {
   const category: Category = useSelector(selectCategory);
@@ -77,18 +110,14 @@ const Books = ({title, src}: Props) => {
   const forcePage = category.totalPage < page - 1 ? undefined : (page - 1);
 
   return (
-    <div className="books">
-      <div className="content">
-        <h1>{title}</h1>
-        {isLoading ?
-          'Загрузка...' :
-          <>
-            <Container>
-              {category.items.map((item, index) => <Card key={index} book={item} />)}
-            </Container>
-          </>
-        }
-      </div>
+    <BaseBooks>
+      <h1>{title}</h1>
+      {isLoading ?
+        'Загрузка...' :
+        <BooksContainer>
+          {category.items.map((item, index) => <Card key={index} book={item} />)}
+        </BooksContainer>
+      }
       <ReactPaginate
         previousLabel={"<"}
         nextLabel={">"}
@@ -101,7 +130,7 @@ const Books = ({title, src}: Props) => {
         forcePage={forcePage}
         containerClassName={"pagination"}
         activeClassName={"active"}/>
-    </div>
+    </BaseBooks>
   );
 }
 

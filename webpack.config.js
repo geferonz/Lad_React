@@ -24,11 +24,11 @@ export const module = {
   ],
   resolve: {
     alias: {
-      app: path.resolve(__dirname, 'src/app/'),
-      assets: path.resolve(__dirname, 'src/assets/'),
-      components: path.resolve(__dirname, 'src/components/'),
-      pages: path.resolve(__dirname, 'src/pages/'),
-      store: path.resolve(__dirname, 'src/store/')
+      assets: path.resolve(__dirname, 'src/assets/index.ts'),
+      components: path.resolve(__dirname, 'src/components/index.ts'),
+      pages: path.resolve(__dirname, 'src/pages/index.ts'),
+      store: path.resolve(__dirname, 'src/store/index.ts'),
+      types: path.resolve(__dirname, 'src/types/main.ts')
     },
   }
 };

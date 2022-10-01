@@ -3,12 +3,20 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   books: {
     totalPage: 1,
-    // page: 1,
     isLoading: true,
     items: [{
-      title: 'Извините, книги не найдены...',
-      imageLinks: ''
-    }]
+      title: 'Sorry no books found...',
+      smallThumbnail: '',
+      thumbnail: '',
+      description: ''
+    }],
+    modal: false,
+    openBook: {
+      title: 'Sorry, book not found...',
+      smallThumbnail: '',
+      thumbnail: '',
+      description: ''
+    }
   }
 };
 
@@ -20,16 +28,19 @@ export const categorySlice = createSlice({
       state.books.totalPage = action.payload.totalPage || initialState.books.totalPage;
       state.books.items = action.payload.items || initialState.books.items;
     },
-    // updatePage: (state, action) => {
-    //   state.books.page = action.payload || initialState.books.page;
-    // },
     updateIsLoading: (state, action) => {
       state.books.isLoading = action.payload;
-    }
+    },
+    updateModal: (state, action) => {
+      state.books.modal = action.payload;
+    },
+    updateOpenBook: (state, action) => {
+      state.books.openBook = action.payload || initialState.books.openBook;
+    },
   }
 });
 
-export const { updateCategory, updateIsLoading } = categorySlice.actions;
+export const { updateCategory, updateIsLoading, updateModal, updateOpenBook } = categorySlice.actions;
 
 export const selectCategory = (state:any) => state.category.books;
 

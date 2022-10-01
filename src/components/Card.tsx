@@ -1,10 +1,12 @@
-import { Items } from 'types';
+import { useDispatch } from "react-redux";
 import styled from 'styled-components';
 
 import { noimg } from 'assets';
+import { updateModal, updateOpenBook } from 'store';
+import { Item } from 'types';
 
 interface Props {
-  book: Items
+  book: Item
 }
 
 const BaseCard = styled.div`
@@ -29,9 +31,16 @@ const BaseCard = styled.div`
 `
 
 const Card = ({ book }: Props) => {
-  const src = book.imageLinks ? book.imageLinks : noimg;
+  const src = book.thumbnail ? book.thumbnail : noimg;
+  const dispatch = useDispatch();
+
+  function openModal() {
+    dispatch(updateOpenBook(book));
+    dispatch(updateModal(true));
+  }
+
   return (
-    <BaseCard>
+    <BaseCard onClick={openModal}>
       <img src={src} alt='Нет обложки' draggable='false' />
       <div className="title">{ book.title }</div>
     </BaseCard>

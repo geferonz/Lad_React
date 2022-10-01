@@ -1,32 +1,17 @@
 import axios from 'axios';
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { Card, Container, Popup } from 'components';
 import { selectCategory, updateCategory, updateIsLoading } from 'store';
-import { Card, Container } from 'components';
-import { Items } from 'types';
+import { Book, Category } from 'types';
 
 interface Props {
   title: string,
   src: string
-}
-
-export interface Book {
-  volumeInfo: {
-      title: string;
-      imageLinks: {
-        smallThumbnail: string;
-      }
-  }
-}
-
-interface Category {
-  totalPage: number,
-  isLoading: boolean,
-  items: Items[]
 }
 
 const BaseBooks = styled.div`
@@ -100,7 +85,12 @@ const Books = ({title, src}: Props) => {
         dispatch(updateCategory({
           totalPage,
           items: resp.data.items.map((item: Book) => {
-            return {title: item.volumeInfo.title, imageLinks: item.volumeInfo.imageLinks?.smallThumbnail}
+            return {
+              title: item.volumeInfo.title,
+              smallThumbnail: item.volumeInfo.imageLinks?.smallThumbnail,
+              thumbnail: item.volumeInfo.imageLinks?.thumbnail,
+              description: item.volumeInfo?.description
+            }
           })
         }));
       });
@@ -112,6 +102,7 @@ const Books = ({title, src}: Props) => {
   return (
     <BaseBooks>
       <h1>{title}</h1>
+      <Popup />
       {isLoading ?
         'Загрузка...' :
         <BooksContainer>
